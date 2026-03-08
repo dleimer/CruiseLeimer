@@ -6,6 +6,11 @@ app = Flask(__name__)
 
 DB_PATH = os.environ.get('DB_PATH', os.path.join(os.path.dirname(__file__), 'cruise.db'))
 
+# Ensure the directory exists (needed when Render disk is mounted at /data)
+_db_dir = os.path.dirname(DB_PATH)
+if _db_dir:
+    os.makedirs(_db_dir, exist_ok=True)
+
 CATEGORIES = ['Documents & IDs', 'Bookings', 'Getting There', 'Packing', 'Day of Departure']
 COST_CATEGORIES = ['Hotel', 'Parking', 'Transport', 'Excursion', 'Other']
 
