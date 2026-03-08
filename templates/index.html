@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cruise to Leimer Island 🚢</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F8F6F1; font-family: 'Montserrat', sans-serif; color: #2C2C2C; min-height: 100vh; }
+
+/* ── HEADER ── */
+header {
+  background: linear-gradient(135deg, #0077B6 0%, #023E8A 100%);
+  color: white;
+  padding: 24px 24px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 24px;
+  background: #F8F6F1;
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+.site-title {
+  font-family: 'Pacifico', cursive;
+  font-size: 28px;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.countdown {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 4px;
+}
+.countdown span {
+  color: #FFD166;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  max-width: 720px;
+  margin: 24px auto 0;
+  padding: 0 16px;
+  gap: 8px;
+}
+.tab-btn {
+  flex: 1;
+  padding: 12px;
+  background: white;
+  border: 2px solid #E8E4DC;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: #8A8580;
+  transition: all 0.15s;
+}
+.tab-btn.active {
+  background: #0077B6;
+  border-color: #0077B6;
+  color: white;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── MAIN WRAP ── */
+.wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* ── CATEGORY SECTION ── */
+.category-block {
+  background: white;
+  border: 1px solid #E8E4DC;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.category-header {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid #F0EDE8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.category-name {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #0077B6;
+}
+.category-progress-wrap { flex: 1; max-width: 120px; }
+.progress-bar-bg {
+  height: 4px;
+  background: #F0EDE8;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: #FF6B35;
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+.progress-label {
+  font-size: 9px;
+  color: #8A8580;
+  letter-spacing: 1px;
+  margin-top: 3px;
+}
+
+/* ── TASK ITEMS ── */
+.task-list { padding: 4px 0; }
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #F8F6F1;
+  transition: background 0.1s;
+}
+.task-item:last-child { border-bottom: none; }
+.task-item:hover { background: #FAFAF8; }
+
+.task-check {
+  width: 20px; height: 20px;
+  border: 2px solid #DDD8CE;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  font-size: 11px;
+  color: white;
+}
+.task-check.done {
+  background: #0077B6;
+  border-color: #0077B6;
+}
+.task-text {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.4;
+  transition: all 0.15s;
+}
+.task-text.done {
+  text-decoration: line-through;
+  color: #C0BAB4;
+}
+.task-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #DDD8CE;
+  font-size: 16px;
+  padding: 2px 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.task-delete:hover { color: #FF6B35; }
+
+/* ── ADD TASK FORM ── */
+.add-task-form {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px 14px;
+  border-top: 1px solid #F0EDE8;
+}
+.add-task-input {
+  flex: 1;
+  border: 1px solid #E8E4DC;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-family: 'Montserrat', sans-serif;
+  outline: none;
+  color: #2C2C2C;
+}
+.add-task-input:focus { border-color: #0077B6; }
+.add-task-btn {
+  background: #FF6B35;
+  color: white;
+  border: none;
+  padding: 9px 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.add-task-btn:hover { background: #e55a25; }
+
+/* ── COSTS TAB ── */
+.costs-summary {
+  background: linear-gradient(135deg, #0077B6, #023E8A);
+  color: white;
+  padding: 20px 20px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.total-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.75; margin-bottom: 4px; }
+.total-amount { font-size: 36px; font-weight: 600; font-family: 'Pacifico', cursive; }
+
+.cost-add-box {
+  background: white;
+  border: 1px solid #E8E4DC;
+  padding: 18px 16px;
+  margin-bottom: 16px;
+}
+.cost-add-title {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #0077B6;
+  margin-bottom: 12px;
+}
+.cost-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.cost-form-grid.wide { grid-template-columns: 1fr; }
+.field-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #8A8580;
+  margin-bottom: 4px;
+}
+.cost-input, .cost-select {
+  width: 100%;
+  border: 1px solid #E8E4DC;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-family: 'Montserrat', sans-serif;
+  outline: none;
+  color: #2C2C2C;
+  background: white;
+}
+.cost-input:focus, .cost-select:focus { border-color: #0077B6; }
+.add-cost-btn {
+  width: 100%;
+  background: #0077B6;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.add-cost-btn:hover { background: #005f93; }
+
+/* Cost table */
+.cost-table-wrap {
+  background: white;
+  border: 1px solid #E8E4DC;
+  overflow: hidden;
+}
+.cost-table { width: 100%; border-collapse: collapse; }
+.cost-table th {
+  padding: 11px 14px;
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #8A8580;
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 1px solid #F0EDE8;
+  background: #FAFAF8;
+}
+.cost-table td {
+  padding: 11px 14px;
+  font-size: 13px;
+  border-bottom: 1px solid #F8F6F1;
+  vertical-align: middle;
+}
+.cost-table tr:last-child td { border-bottom: none; }
+.cost-cat-badge {
+  display: inline-block;
+  font-size: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  background: #EDF4FB;
+  color: #0077B6;
+  font-weight: 600;
+  border-radius: 2px;
+}
+.cost-amount { font-weight: 600; color: #0077B6; }
+.cost-notes { font-size: 11px; color: #8A8580; margin-top: 2px; }
+.cost-delete {
+  background: none; border: none; cursor: pointer;
+  color: #DDD8CE; font-size: 16px; padding: 2px;
+  transition: color 0.15s;
+}
+.cost-delete:hover { color: #FF6B35; }
+.empty-state {
+  padding: 32px;
+  text-align: center;
+  color: #C0BAB4;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">🚢 Cruise to Leimer Island</div>
+  <div class="countdown">Setting sail in <span id="countdown-days">—</span> days · July 3, 2026 · Port Canaveral</div>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('checklist', this)">✓ Checklist</button>
+  <button class="tab-btn" onclick="switchTab('costs', this)">💰 Costs</button>
+</div>
+
+<div class="wrap">
+
+  <!-- ── CHECKLIST TAB ── -->
+  <div class="tab-panel active" id="tab-checklist">
+    {% for cat in categories %}
+    <div class="category-block" id="cat-{{ loop.index }}">
+      <div class="category-header">
+        <span class="category-name">{{ cat }}</span>
+        <div class="category-progress-wrap">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="prog-{{ loop.index }}" style="width:0%"></div>
+          </div>
+          <div class="progress-label" id="prog-label-{{ loop.index }}">0 of 0</div>
+        </div>
+      </div>
+      <div class="task-list" id="tasks-{{ cat | replace(' ', '-') | replace('&', 'and') }}"></div>
+      <div class="add-task-form">
+        <input class="add-task-input" type="text" placeholder="Add a task…" data-category="{{ cat }}"
+               onkeydown="if(event.key==='Enter') addTask('{{ cat }}', this)">
+        <button class="add-task-btn" onclick="addTaskFromBtn('{{ cat }}', this)">Add</button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- ── COSTS TAB ── -->
+  <div class="tab-panel" id="tab-costs">
+
+    <div class="costs-summary">
+      <div>
+        <div class="total-label">Running Total</div>
+        <div class="total-amount" id="total-amount">$0</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="total-label">Items</div>
+        <div style="font-size:28px;font-weight:600;" id="cost-count">0</div>
+      </div>
+    </div>
+
+    <div class="cost-add-box">
+      <div class="cost-add-title">Add an Expense</div>
+      <div class="cost-form-grid">
+        <div>
+          <div class="field-label">Description</div>
+          <input class="cost-input" id="cost-desc" type="text" placeholder="e.g. DoubleTree Hotel July 2">
+        </div>
+        <div>
+          <div class="field-label">Amount ($)</div>
+          <input class="cost-input" id="cost-amount" type="number" min="0" step="0.01" placeholder="0.00">
+        </div>
+        <div>
+          <div class="field-label">Category</div>
+          <select class="cost-select" id="cost-cat">
+            {% for c in cost_categories %}
+            <option>{{ c }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <div class="field-label">Notes <span style="font-weight:300;color:#C0BAB4">(optional)</span></div>
+          <input class="cost-input" id="cost-notes" type="text" placeholder="e.g. 4 rooms, ~$300 each">
+        </div>
+      </div>
+      <button class="add-cost-btn" onclick="addCost()">Add Expense →</button>
+    </div>
+
+    <div class="cost-table-wrap">
+      <table class="cost-table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="cost-tbody">
+          <tr><td colspan="4" class="empty-state">No expenses yet — add one above</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /costs -->
+
+</div><!-- /wrap -->
+
+<script>
+// ── Countdown ──────────────────────────────────────────────
+function updateCountdown() {
+  const target = new Date('2026-07-03T00:00:00');
+  const now = new Date();
+  const days = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+  document.getElementById('countdown-days').textContent = days > 0 ? days : '0';
+}
+updateCountdown();
+
+// ── Tabs ───────────────────────────────────────────────────
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+// ── Category ID helpers ────────────────────────────────────
+function catId(cat) {
+  return cat.replace(/\s+/g, '-').replace(/&/g, 'and');
+}
+
+// ── Render tasks ───────────────────────────────────────────
+function renderTasks(tasks) {
+  const categories = {{ categories | tojson }};
+  categories.forEach((cat, i) => {
+    const catTasks = tasks.filter(t => t.category === cat);
+    const done = catTasks.filter(t => t.completed).length;
+    const total = catTasks.length;
+    const pct = total ? Math.round((done / total) * 100) : 0;
+
+    const progBar = document.getElementById('prog-' + (i + 1));
+    const progLabel = document.getElementById('prog-label-' + (i + 1));
+    if (progBar) { progBar.style.width = pct + '%'; }
+    if (progLabel) { progLabel.textContent = total ? done + ' of ' + total : 'No tasks yet'; }
+
+    const list = document.getElementById('tasks-' + catId(cat));
+    if (!list) return;
+    list.innerHTML = catTasks.length === 0
+      ? '<div style="padding:12px 16px;font-size:12px;color:#C0BAB4;letter-spacing:0.5px;">No tasks yet</div>'
+      : catTasks.map(t => `
+        <div class="task-item" id="task-${t.id}">
+          <div class="task-check ${t.completed ? 'done' : ''}" onclick="toggleTask(${t.id})">
+            ${t.completed ? '✓' : ''}
+          </div>
+          <span class="task-text ${t.completed ? 'done' : ''}">${escHtml(t.text)}</span>
+          <button class="task-delete" onclick="deleteTask(${t.id})" title="Delete">×</button>
+        </div>`).join('');
+  });
+}
+
+// ── Render costs ───────────────────────────────────────────
+function renderCosts(costs) {
+  const tbody = document.getElementById('cost-tbody');
+  const total = costs.reduce((s, c) => s + c.amount, 0);
+  document.getElementById('total-amount').textContent = '$' + total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  document.getElementById('cost-count').textContent = costs.length;
+
+  if (!costs.length) {
+    tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No expenses yet — add one above</td></tr>';
+    return;
+  }
+  tbody.innerHTML = costs.map(c => `
+    <tr id="cost-${c.id}">
+      <td>
+        <div style="font-weight:400">${escHtml(c.description)}</div>
+        ${c.notes ? '<div class="cost-notes">' + escHtml(c.notes) + '</div>' : ''}
+      </td>
+      <td><span class="cost-cat-badge">${escHtml(c.category)}</span></td>
+      <td class="cost-amount">$${Number(c.amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+      <td><button class="cost-delete" onclick="deleteCost(${c.id})">×</button></td>
+    </tr>`).join('');
+}
+
+// ── Load all data ──────────────────────────────────────────
+function loadData() {
+  fetch('/api/data')
+    .then(r => r.json())
+    .then(d => { renderTasks(d.tasks); renderCosts(d.costs); });
+}
+
+// ── Task actions ───────────────────────────────────────────
+function addTask(cat, input) {
+  const text = input.value.trim();
+  if (!text) return;
+  fetch('/api/tasks', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({category: cat, text})
+  }).then(() => { input.value = ''; loadData(); });
+}
+
+function addTaskFromBtn(cat, btn) {
+  const input = btn.previousElementSibling;
+  addTask(cat, input);
+}
+
+function toggleTask(id) {
+  fetch('/api/tasks/' + id + '/toggle', {method: 'POST'}).then(() => loadData());
+}
+
+function deleteTask(id) {
+  fetch('/api/tasks/' + id, {method: 'DELETE'}).then(() => loadData());
+}
+
+// ── Cost actions ───────────────────────────────────────────
+function addCost() {
+  const description = document.getElementById('cost-desc').value.trim();
+  const amount = parseFloat(document.getElementById('cost-amount').value);
+  const category = document.getElementById('cost-cat').value;
+  const notes = document.getElementById('cost-notes').value.trim();
+  if (!description || !amount || amount <= 0) return;
+  fetch('/api/costs', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({description, amount, category, notes})
+  }).then(() => {
+    document.getElementById('cost-desc').value = '';
+    document.getElementById('cost-amount').value = '';
+    document.getElementById('cost-notes').value = '';
+    loadData();
+  });
+}
+
+function deleteCost(id) {
+  fetch('/api/costs/' + id, {method: 'DELETE'}).then(() => loadData());
+}
+
+// ── Utils ──────────────────────────────────────────────────
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Init ───────────────────────────────────────────────────
+loadData();
+</script>
+</body>
+</html>

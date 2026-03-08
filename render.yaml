@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: cruise-leimer-island
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: DB_PATH
+        value: /data/cruise.db
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1
